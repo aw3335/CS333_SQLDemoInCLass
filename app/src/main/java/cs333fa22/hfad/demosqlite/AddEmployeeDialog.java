@@ -31,8 +31,7 @@ public class AddEmployeeDialog extends DialogFragment {
 
     public AddEmployeeDialog()
     {
-        //NEED TO FIX THIS
-        dbHelper = new DBHelper();
+
     }
 
     @Override
@@ -55,7 +54,6 @@ public class AddEmployeeDialog extends DialogFragment {
         btnCancel = dialogView.findViewById(R.id.btnCancel);
 
         // on clicking ok on the calender dialog
-
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +65,8 @@ public class AddEmployeeDialog extends DialogFragment {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                saveEmployee();
 
                 dismiss();
 
@@ -101,6 +101,8 @@ public class AddEmployeeDialog extends DialogFragment {
             }
         });
 
+        //create db helper
+        dbHelper = new DBHelper(getContext());
         builder.setView(dialogView).setMessage("Add New Employee");
         return builder.create();
     }
@@ -128,6 +130,7 @@ public class AddEmployeeDialog extends DialogFragment {
            // employeeListAdapter.notifyDataSetChanged();
            // employeeListAdapter.notifyItemRangeChanged(0, emps.size());
 
+            dbHelper.saveEmployee(name, desig, calInMS);
 
             toastString = "Employee Added!";
         }

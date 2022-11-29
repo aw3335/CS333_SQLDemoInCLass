@@ -15,6 +15,8 @@ public class DBContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_DOB = "dob";
         public static final String COLUMN_DESIGNATION = "designation";
+
+        //Implementing basecolumns forces us to implement this line of code
         public static final String COLUMN_ID = _ID;
 
         public static final String CREATE_EMP_TABLE_CMD = "CREATE TABLE " + TABLE_NAME + " ("
