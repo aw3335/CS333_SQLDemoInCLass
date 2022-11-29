@@ -31,6 +31,8 @@ public class AddEmployeeDialog extends DialogFragment {
 
     public AddEmployeeDialog()
     {
+        //NEED TO FIX THIS
+        dbHelper = new DBHelper();
     }
 
     @Override
@@ -125,6 +127,7 @@ public class AddEmployeeDialog extends DialogFragment {
            // employeeListAdapter.setEmployees(emps);
            // employeeListAdapter.notifyDataSetChanged();
            // employeeListAdapter.notifyItemRangeChanged(0, emps.size());
+
 
             toastString = "Employee Added!";
         }
