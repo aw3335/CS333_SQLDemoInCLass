@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public ArrayList<Employee> fetchAllEmployees()
     {
-        ArrayList<Employee> allEmps = new ArrayList<Employee>();
+        ArrayList<Employee> allEmps = new ArrayList<Employee>(); 
 
         String insertString = String.format("Select * from %s", DBContract.EmployeeEntry.TABLE_NAME);
 
