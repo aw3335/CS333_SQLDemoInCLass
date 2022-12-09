@@ -3,6 +3,7 @@ package cs333fa22.hfad.demosqlite;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,11 +33,14 @@ public class UpdateEmployeeDialog  extends DialogFragment
     private Button btnCancel;
     private DBHelper dbHelper;
     private Employee employeeToShow;
+    private EmployeeListAdapter employeeListAdapter;
 
 
-    public UpdateEmployeeDialog(Employee employee)
+    public UpdateEmployeeDialog(Employee employee, EmployeeListAdapter empListAdapter)
     {
-        this.employeeToShow = employee;
+        employeeListAdapter = empListAdapter;
+        employeeToShow = employee;
+        //employeeListAdapter = new EmployeeListAdapter(view.getContext());
     }
 
     @Override
@@ -44,6 +48,7 @@ public class UpdateEmployeeDialog  extends DialogFragment
 
 
         super.onCreate(savedInstanceState);
+        dbHelper = new DBHelper(getContext());
 
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(getActivity());
@@ -73,6 +78,8 @@ public class UpdateEmployeeDialog  extends DialogFragment
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                updateEmployeeInfo();
 
                 dismiss();
 
@@ -108,6 +115,8 @@ public class UpdateEmployeeDialog  extends DialogFragment
                 dialog.show();
             }
         });
+        dbHelper = new DBHelper(getContext());
+
 
         builder.setView(dialogView).setMessage("Update Employee");
         return builder.create();
@@ -129,12 +138,28 @@ public class UpdateEmployeeDialog  extends DialogFragment
         }
         else  //Update info for employee
         {
+            employeeToShow.setName(name);
+            employeeToShow.setDesignation(desig);
+            employeeToShow.setDob(calInMS);
+
+
+            dbHelper.updateEmployee(employeeToShow);
+
+
+            ArrayList<Employee> allEmps = dbHelper.fetchAllEmployees();
+
+            employeeListAdapter.setEmployees(allEmps);
+            employeeListAdapter.notifyDataSetChanged();
+            employeeListAdapter.notifyItemRangeChanged(0, allEmps.size());
+
             toastString = "Employee updated.";
 
         }
 
+
         Toast t = Toast.makeText(getContext(), toastString, Toast.LENGTH_SHORT);
         t.show();
+
     }
 
 
@@ -142,7 +167,7 @@ public class UpdateEmployeeDialog  extends DialogFragment
 
         SimpleDateFormat formatter = new  SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault());
 
-        Date dobDate =   new Date(dobInMilis);
+        Date dobDate =  new Date(dobInMilis);
 
         String s = formatter.format(dobDate);
 

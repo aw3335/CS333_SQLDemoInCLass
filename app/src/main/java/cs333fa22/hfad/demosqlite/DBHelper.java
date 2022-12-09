@@ -51,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public ArrayList<Employee> fetchAllEmployees()
     {
-        ArrayList<Employee> allEmps = new ArrayList<Employee>(); 
+        ArrayList<Employee> allEmps = new ArrayList<Employee>();
 
         String insertString = String.format("Select * from %s", DBContract.EmployeeEntry.TABLE_NAME);
 
@@ -84,5 +84,32 @@ public class DBHelper extends SQLiteOpenHelper{
 
         return allEmps;
 
+    }
+    
+    public void updateEmployee(Employee emp)
+    {
+        /*
+        UPDATE employee
+        set name  = 'Ann Houckk',
+        designation = 'President Extraordinaire',
+        dob = 1667477869517
+        where _id = 1;
+         */
+        String update  = String.format("UPDATE %s \n" +
+                                       "SET %s  = '%s',\n" +
+                                       "%s = '%s',\n" +
+                                       "%s = %d\n" +
+                                       "WHERE %s = %d;",
+                                       DBContract.EmployeeEntry.TABLE_NAME,
+                DBContract.EmployeeEntry.COLUMN_NAME, emp.getName(),
+                DBContract.EmployeeEntry.COLUMN_DESIGNATION, emp.getDesignation(),
+                DBContract.EmployeeEntry.COLUMN_DOB,emp.getDob(),
+                DBContract.EmployeeEntry.COLUMN_ID,emp.getId());
+
+        System.out.println("UPDATING " + update);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(update);
+        db.close();
     }
 }

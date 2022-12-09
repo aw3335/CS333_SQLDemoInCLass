@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddEmployeeDialog dialog = new AddEmployeeDialog();//(empListAdapter);
+                AddEmployeeDialog dialog = new AddEmployeeDialog(empListAdapter);
                 dialog.show(getSupportFragmentManager(), "");
             }
         });
@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.recyclerView);
 
         EmployeeListAdapter empListAdapter = new EmployeeListAdapter(this);
-        empListAdapter.setEmployees(new ArrayList<Employee>());
+
+        ArrayList<Employee> allEmps = dbHelper.fetchAllEmployees();
+        empListAdapter.setEmployees(allEmps);
 
         rv.setAdapter(empListAdapter);
 
